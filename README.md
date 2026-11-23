@@ -1,6 +1,6 @@
 # CCC Sharing Economy Index 2026 dashboards
 
-Seven independent dashboards for the Consumer Choice Center Sharing Economy Index 2026. Each page has its own URL and relevant controls, with CCC-attributed PNG export and an accessible data table. There is no dashboard switcher or embed dialog inside individual pages.
+Seven independent dashboards and a combined tabbed explorer for the Consumer Choice Center Sharing Economy Index 2026. Each page has its own URL and relevant controls, with CCC-attributed PNG export and an accessible data table. The individual pages have no dashboard switcher or embed dialog. The combined explorer has a top tab bar for switching among all seven views.
 
 Repository: [Consumer-Choice-Center/ccc-sharing-economy-dashboards](https://github.com/Consumer-Choice-Center/ccc-sharing-economy-dashboards). This repository contains source and assets; hosting is managed separately. No automated deployment is configured.
 
@@ -8,6 +8,7 @@ Repository: [Consumer-Choice-Center/ccc-sharing-economy-dashboards](https://gith
 
 | Dashboard | URL path | Main controls |
 | --- | --- | --- |
+| **All dashboards** | `combined/` | Seven tabs, each retaining its own controls and filter settings |
 | World map | `map/` | Geography, official/custom scoring, weights, camera, tilt, height |
 | City rankings | `rankings/` | Geography, top cities, pinned city, optional custom scoring |
 | Category scores | `categories/` | Geography, category, number of displayed cities |
@@ -16,7 +17,7 @@ Repository: [Consumer-Choice-Center/ccc-sharing-economy-dashboards](https://gith
 | City score distributions | `distributions/` | Geography, highlighted city |
 | Ranking movement | `ranking-movement/` | Geography, category weights, display count, sorting |
 
-The root page is a directory of these seven pages. They share implementation, fonts and data but load independently. Non-map pages do not fetch the map geometry files.
+The root page links to the combined explorer and the seven standalone pages. They share implementation, fonts and data but load independently. Non-map pages do not fetch the map geometry files.
 
 ## Run locally
 
@@ -35,7 +36,8 @@ Open `http://127.0.0.1:8766/`. Stop with Ctrl+C. Set `PORT` to use another port.
 ## Repository structure
 
 ```text
-src/dashboard.html          Shared page template
+src/combined.html           Combined explorer with top tabs
+src/dashboard.html          Shared standalone page template
 src/dashboards.json         Seven route definitions
 src/scoring.html            Optional scoring controls
 src/map-tools.html          Map-only camera controls
@@ -51,6 +53,26 @@ Edit `src/`, then rebuild. All internal URLs are relative, so the dashboards can
 Clone the repository, then use the commands above to test, build and preview. Commit changes to `src/` and the supporting scripts; `site/` is generated and ignored by Git.
 
 The generated `site/` directory can be served by any static web server, including the CCC website’s existing hosting. Preserve its folder structure so each dashboard can load the shared assets.
+
+## Embed the combined explorer
+
+Use `combined/` as the iframe URL for one switchable dashboard. Append a hash to choose the initial tab, for example `combined/#heatmap` or `combined/#ranking-movement`. The default is the world map.
+
+Views load on first selection and retain their own filters, selected cities and map camera while switching. Each tab keeps its relevant controls and CCC-attributed PNG export. Arrow keys, Home and End move focus among tabs; Enter or Space activates a tab. The inner dashboard resizes to its content without a second page scrollbar; the host webpage still controls the outer iframe height.
+
+```html
+<iframe
+  src="https://YOUR-HOST.example/dashboards/combined/"
+  title="CCC Sharing Economy Index 2026 — All dashboards"
+  width="100%"
+  height="1200"
+  style="border:0;display:block"
+  loading="lazy"
+  referrerpolicy="strict-origin-when-cross-origin">
+</iframe>
+```
+
+Serve the complete generated `site/` directory together: the combined explorer reuses the seven dashboard pages and shared assets. It does not enable or require GitHub Pages.
 
 ## Embed individual pages
 
