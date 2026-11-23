@@ -1,0 +1,44 @@
+[
+  {
+    "path": "map",
+    "id": "map",
+    "title": "World map",
+    "description": "Explore city scores on an interactive world map."
+  },
+  {
+    "path": "rankings",
+    "id": "ranking",
+    "title": "City rankings",
+    "description": "Compare official scores or adjust category weights."
+  },
+  {
+    "path": "categories",
+    "id": "categories",
+    "title": "Category scores",
+    "description": "Compare category averages or individual cities."
+  },
+  {
+    "path": "compare",
+    "id": "compare",
+    "title": "City comparison",
+    "description": "Compare category scores across selected cities."
+  },
+  {
+    "path": "heatmap",
+    "id": "heatmap",
+    "title": "City \u00d7 category heatmap",
+    "description": "Scan category scores across cities."
+  },
+  {
+    "path": "distributions",
+    "id": "distribution",
+    "title": "City score distributions",
+    "description": "See how cities are distributed within each category."
+  },
+  {
+    "path": "ranking-movement",
+    "id": "movement",
+    "title": "Ranking movement",
+    "description": "Compare official I-Distance ranks with custom scoring."
+  }
+]
