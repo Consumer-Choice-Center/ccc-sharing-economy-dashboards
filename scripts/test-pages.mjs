@@ -18,3 +18,17 @@ for(const page of pages){
  assert.equal(new URL('../shared/app.js',published).pathname,'/dashboards/shared/app.js');
 }
 console.log('Passed: seven independent pages, scoped controls, export tools, local assets, and subdirectory URL resolution.');
+
+const combinedLocation=new URL('combined/index.html',root),combined=await readFile(combinedLocation,'utf8');
+assert.equal([...combined.matchAll(/role="tab" /g)].length,7);
+assert.equal([...combined.matchAll(/role="tabpanel" /g)].length,7);
+assert.equal([...combined.matchAll(/aria-selected="true"/g)].length,1);
+assert.ok(!/embedBtn|embedDialog|\{\{/.test(combined));
+for(const page of pages){
+ assert.ok(combined.includes(`aria-controls="panel-${page.path}"`));
+ assert.ok(combined.includes(`aria-labelledby="tab-${page.path}"`));
+ assert.ok((await stat(new URL(`../${page.path}/index.html`,combinedLocation))).isFile());
+}
+for(const [,url]of combined.matchAll(/(?:src|href)="([^"#]+)"/g))if(!url.startsWith('https:'))assert.ok(await stat(new URL(url,combinedLocation)));
+assert.ok((await readFile(new URL('index.html',root),'utf8')).includes('href="combined/"'));
+console.log('Passed: combined explorer exposes seven linked tab panels and resolves all shared assets.');
